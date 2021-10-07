@@ -1,0 +1,47 @@
+.trigger {
+  padding: 0 24px;
+  font-size: 18px;
+  line-height: 64px;
+  cursor: pointer;
+  transition: color 0.3s;
+  &:hover {
+    color: #1890ff;
+  }
+}
+
+.logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.header {
+  background: #fff;
+  width: 100%;
+  padding: 0 2rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.dropdown {
+  width: 200px;
+  padding: 0.5rem 1rem;
+}
+
+.layout {
+  height: 100vh;
+}
+
+.content {
+  background: #fff;
+  width: 100%;
+  margin: 24px 16px;
+  margin-left: 0 !important;
+  padding: 24px;
+}
+
+.avatar {
+  align-self: center;
+  color: #f56a00;
+  background: #fde3cf;
+}

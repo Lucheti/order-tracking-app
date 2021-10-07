@@ -7,26 +7,48 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-dbml-generator"
 }
 
 // --------------------------------------
 
 model User {
-  id             Int      @id @default(autoincrement())
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
-  name           String?
-  email          String   @unique
-  hashedPassword String?
-  role           String   @default("USER")
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
+  //basic data
+  name           String
+  surname        String?
+  phone          String?
+  email          String  @unique
+  hashedPassword String?
+  role           String  @default("USER")
+
+  //relations
   tokens   Token[]
   sessions Session[]
 }
 
+model Client {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name         String
+  surname      String?
+  phone        String?
+  email        String    @unique
+  birthdate    DateTime?
+  cuil         Int?
+  businessName String?
+
+  Order   Order[]
+  Invoice Invoice[]
+}
+
 model Session {
-  id                 Int       @id @default(autoincrement())
+  id                 String    @id @default(uuid())
   createdAt          DateTime  @default(now())
   updatedAt          DateTime  @updatedAt
   expiresAt          DateTime?
@@ -36,12 +58,12 @@ model Session {
   publicData         String?
   privateData        String?
 
-  user   User? @relation(fields: [userId], references: [id])
-  userId Int?
+  user   User?   @relation(fields: [userId], references: [id])
+  userId String?
 }
 
 model Token {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   hashedToken String
@@ -51,8 +73,8 @@ model Token {
   expiresAt   DateTime
   sentTo      String
 
-  user   User @relation(fields: [userId], references: [id])
-  userId Int
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
 
   @@unique([hashedToken, type])
 }
@@ -63,3 +85,73 @@ model Token {
 // enum TokenType {
 //   RESET_PASSWORD
 // }
+
+model Order {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  total     Int
+  invoiced  Boolean @default(false)
+  picking   Boolean @default(false)
+  direction String
+
+
+  client   Client @relation(fields: [clientId], references: [id])
+  clientId String
+
+  products OrderedProduct[]
+  Product  Product[]
+  Invoice  Invoice[]
+}
+
+model OrderedProduct {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  Order     Order?  @relation(fields: [orderId], references: [id])
+  orderId   String?
+  productId String
+}
+
+model Product {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  model          String
+  brand          String
+  stock          Int
+  location       String
+  description    String?
+  Order          Order?           @relation(fields: [orderId], references: [id])
+  orderId        String?
+  OrderedProduct OrderedProduct[]
+}
+
+model Invoice {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  type String
+  iva  Float
+
+  client     Client       @relation(fields: [clientId], references: [id])
+  order      Order        @relation(fields: [orderId], references: [id])
+  clientId   String
+  orderId    String
+  CreditNote CreditNote[]
+}
+
+model CreditNote {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  invoice   Invoice @relation(fields: [invoiceId], references: [id])
+  invoiceId String
+}

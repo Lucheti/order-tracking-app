@@ -24,13 +24,16 @@
     ]
   },
   "dependencies": {
+    "@ant-design/icons": "4.7.0",
     "@prisma/client": "3.1.1",
+    "antd": "4.16.13",
     "blitz": "0.40.0",
-    "react-dom": "alpha",
-    "react": "alpha",
-    "zod": "3.9.5",
     "final-form": "4.20.4",
-    "react-final-form": "6.5.7"
+    "react": "alpha",
+    "react-dom": "alpha",
+    "react-final-form": "6.5.7",
+    "sass": "1.42.1",
+    "zod": "3.9.5"
   },
   "devDependencies": {
     "@types/preview-email": "2.0.1",
