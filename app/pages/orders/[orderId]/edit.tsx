@@ -26,7 +26,6 @@ export const EditOrder = () => {
 
       <div>
         <h1>Edit Order {order.id}</h1>
-        <pre>{JSON.stringify(order, null, 2)}</pre>
 
         <OrderForm
           submitText="Update Order"

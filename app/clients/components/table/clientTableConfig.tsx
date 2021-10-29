@@ -1,8 +1,10 @@
 import { ColumnGroupType, ColumnsType, ColumnType } from "antd/lib/table/interface"
 import { Client } from "db"
 import { Space } from "antd"
-import { Link, Routes } from "blitz"
+import { Link, Routes, useMutation, useRouter } from "blitz"
 import React from "react"
+import deleteOrder from "../../../orders/mutations/deleteOrder"
+import deleteClient from "../../mutations/deleteClient"
 
 const basicColumn = <Key extends keyof Client>(
   key: Key,
@@ -12,6 +14,32 @@ const basicColumn = <Key extends keyof Client>(
   dataIndex: title.toLowerCase(),
   key: title.toLowerCase(),
 })
+
+const Actions = ({ client }: { client: Client }) => {
+  const router = useRouter()
+  const [deleteClientMutation] = useMutation(deleteClient)
+
+  return (
+    <Space size="middle">
+      <Link href={Routes.ShowClientPage({ clientId: client.id })}>
+        <a>View</a>
+      </Link>
+      <Link href={Routes.EditClientPage({ clientId: client.id })}>
+        <a>Edit</a>
+      </Link>
+      <a
+        onClick={async () => {
+          if (window.confirm("This will be deleted")) {
+            await deleteClientMutation({ id: client.id })
+            router.push(Routes.ClientsPage())
+          }
+        }}
+      >
+        Delete
+      </a>
+    </Space>
+  )
+}
 
 export const columns: ColumnsType<Client> = [
   {
@@ -31,16 +59,6 @@ export const columns: ColumnsType<Client> = [
   {
     title: "Actions",
     key: "actions",
-    render: (_, record) => (
-      <Space size="middle">
-        <Link href={Routes.ShowOrderPage({ orderId: record.id })}>
-          <a>View</a>
-        </Link>
-        <Link href={Routes.EditOrderPage({ orderId: record.id })}>
-          <a>Edit</a>
-        </Link>
-        <a>Delete</a>
-      </Space>
-    ),
+    render: (_, record) => <Actions client={record} />,
   },
 ]

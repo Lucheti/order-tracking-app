@@ -25,7 +25,10 @@ export const LabeledTextField = forwardRef<HTMLInputElement, LabeledTextFieldPro
         props.type === "number"
           ? (Number as any)
           : // Converting `""` to `null` ensures empty values will be set to null in the DB
-            (v) => (v === "" ? null : v),
+            (v) => {
+              console.log(v)
+              return v === "" ? null : v
+            },
       ...fieldProps,
     })
 

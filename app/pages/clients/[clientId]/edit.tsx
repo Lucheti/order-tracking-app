@@ -21,12 +21,13 @@ export const EditClient = () => {
   return (
     <>
       <Head>
-        <title>Edit Client {client.id}</title>
+        <title>
+          Edit Client {client.name} {client.surname}
+        </title>
       </Head>
 
       <div>
         <h1>Edit Client {client.id}</h1>
-        <pre>{JSON.stringify(client, null, 2)}</pre>
 
         <ClientForm
           submitText="Update Client"
@@ -34,7 +35,12 @@ export const EditClient = () => {
           //  - Tip: extract mutation's schema into a shared `validations.ts` file and
           //         then import and use it here
           // schema={UpdateClient}
-          initialValues={client}
+          initialValues={{
+            ...client,
+            birthdate: new Date(client?.birthdate || "")
+              .toISOString()
+              .slice(0, new Date(client?.birthdate || "").toISOString().indexOf("T")),
+          }}
           onSubmit={async (values) => {
             try {
               const updated = await updateClientMutation({
@@ -62,12 +68,6 @@ const EditClientPage: BlitzPage = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <EditClient />
       </Suspense>
-
-      <p>
-        <Link href={Routes.ClientsPage()}>
-          <a>Clients</a>
-        </Link>
-      </p>
     </div>
   )
 }

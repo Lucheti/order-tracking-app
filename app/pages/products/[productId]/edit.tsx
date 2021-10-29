@@ -26,7 +26,6 @@ export const EditProduct = () => {
 
       <div>
         <h1>Edit Product {product.id}</h1>
-        <pre>{JSON.stringify(product, null, 2)}</pre>
 
         <ProductForm
           submitText="Update Product"

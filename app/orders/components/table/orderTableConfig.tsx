@@ -1,10 +1,11 @@
 import { ColumnGroupType, ColumnsType, ColumnType } from "antd/lib/table/interface"
 import { Order, Client } from "db"
 import { Space, Tag } from "antd"
-import { Link, Routes, useQuery } from "blitz"
+import { Link, Routes, useMutation, useQuery, useRouter } from "blitz"
 import React from "react"
 import getClient from "../../../clients/queries/getClient"
 import { ClockCircleOutlined } from "@ant-design/icons"
+import deleteOrder from "../../mutations/deleteOrder"
 
 const basicColumn = <Key extends Capitalize<keyof Order>>(
   key: Key,
@@ -51,6 +52,32 @@ const TagsColumn = ({ order }: { order: Order }) => {
   )
 }
 
+const Actions = ({ order }: { order: Order }) => {
+  const router = useRouter()
+  const [deleteOrderMutation] = useMutation(deleteOrder)
+
+  return (
+    <Space size="middle">
+      <Link href={Routes.ShowOrderPage({ orderId: order.id })}>
+        <a>View</a>
+      </Link>
+      <Link href={Routes.EditOrderPage({ orderId: order.id })}>
+        <a>Edit</a>
+      </Link>
+      <a
+        onClick={async () => {
+          if (window.confirm("This will be deleted")) {
+            await deleteOrderMutation({ id: order.id })
+            router.push(Routes.OrdersPage())
+          }
+        }}
+      >
+        Delete
+      </a>
+    </Space>
+  )
+}
+
 export const columns: ColumnsType<Order> = [
   {
     title: "Id",
@@ -82,16 +109,6 @@ export const columns: ColumnsType<Order> = [
   {
     title: "Actions",
     key: "actions",
-    render: (_, record) => (
-      <Space size="middle">
-        <Link href={Routes.ShowOrderPage({ orderId: record.id })}>
-          <a>View</a>
-        </Link>
-        <Link href={Routes.EditOrderPage({ orderId: record.id })}>
-          <a>Edit</a>
-        </Link>
-        <a>Delete</a>
-      </Space>
-    ),
+    render: (_, record) => <Actions order={record} />,
   },
 ]
