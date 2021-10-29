@@ -16,14 +16,15 @@ export default resolver.pipe(resolver.zod(CreateOrder), resolver.authorize(), as
       id: { in: input.products },
     },
   })
-  console.log(products)
+  const total = products.reduce((acc, next) => acc + next.price, 0)
+
   const order = await db.order.create({
     data: {
       ...input,
+      total,
       invoices: {
         create: [],
       },
-      total: 10,
       products: {
         create: products.map((product) => ({
           product: {

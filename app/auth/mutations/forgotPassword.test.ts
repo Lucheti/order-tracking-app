@@ -33,6 +33,8 @@ describe("forgotPassword mutation", () => {
             sentTo: "user@example.com",
           },
         },
+        name: "user",
+        surname: "test",
       },
       include: { tokens: true },
     })

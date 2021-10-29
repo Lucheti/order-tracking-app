@@ -1,5 +1,5 @@
 import { resolver, NotFoundError } from "blitz"
-import db from "db"
+import db, { Order } from "db"
 import { z } from "zod"
 
 const GetOrder = z.object({
@@ -16,5 +16,5 @@ export default resolver.pipe(resolver.zod(GetOrder), resolver.authorize(), async
 
   if (!order) throw new NotFoundError()
 
-  return order
+  return order as Order
 })

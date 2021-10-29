@@ -44,6 +44,8 @@ describe("resetPassword mutation", () => {
             },
           ],
         },
+        name: "user",
+        surname: "test",
       },
       include: { tokens: true },
     })
