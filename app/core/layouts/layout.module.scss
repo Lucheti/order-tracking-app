@@ -14,16 +14,11 @@
   }
 }
 
-.logo {
-  height: 32px;
-  margin: 16px;
-  background: rgba(255, 255, 255, 0.3);
-}
-
 .header {
-  background: #fff;
+  background: transparent;
   width: 100%;
-  padding: 0 2rem 0 0;
+  padding: 1rem 2rem;
+  height: unset;
   display: flex;
   justify-content: space-between;
 
@@ -31,6 +26,12 @@
     display: flex;
     gap: 2rem;
     align-items: center;
+
+    button {
+      height: unset;
+      padding: 0.5rem 1rem;
+      border-radius: 0.5rem;
+    }
   }
 }
 
@@ -40,15 +41,13 @@
 }
 
 .layout {
-  height: 100vh;
-}
-
-.content {
-  background: #fff;
-  width: 100%;
-  margin: 24px 16px;
-  margin-left: 0 !important;
-  padding: 24px;
+  min-height: 100vh;
+  .content {
+    background: #fff;
+    width: 100%;
+    padding: 24px;
+    border-radius: 1rem;
+  }
 }
 
 .avatar {

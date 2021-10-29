@@ -34,7 +34,10 @@ export const EditOrder = () => {
           //  - Tip: extract mutation's schema into a shared `validations.ts` file and
           //         then import and use it here
           // schema={UpdateOrder}
-          initialValues={order}
+          initialValues={{
+            ...order,
+            products: order.products.map((product) => product.productId),
+          }}
           onSubmit={async (values) => {
             try {
               const updated = await updateOrderMutation({
@@ -62,12 +65,6 @@ const EditOrderPage: BlitzPage = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <EditOrder />
       </Suspense>
-
-      <p>
-        <Link href={Routes.OrdersPage()}>
-          <a>Orders</a>
-        </Link>
-      </p>
     </div>
   )
 }

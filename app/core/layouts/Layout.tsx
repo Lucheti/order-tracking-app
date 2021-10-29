@@ -1,6 +1,6 @@
 import React, { ReactNode, Suspense, useCallback, useState } from "react"
-import { Head, useMutation, useRouter, useSession } from "blitz"
-import { Avatar, Button, Dropdown, Layout, Menu } from "antd"
+import { Head, Image, useMutation, useRouter, useSession } from "blitz"
+import { Avatar, Button, Divider, Dropdown, Layout, Menu } from "antd"
 import {
   CaretLeftOutlined,
   MenuFoldOutlined,
@@ -11,6 +11,7 @@ import {
 } from "@ant-design/icons"
 import classes from "./layout.module.scss"
 import logout from "../../auth/mutations/logout"
+import logoImg from "public/logo-eyewear.png"
 
 const { Header, Sider, Content } = Layout
 
@@ -19,16 +20,17 @@ type LayoutProps = {
   children: ReactNode
 }
 
-const CustomSider = ({ collapsed }: { collapsed: boolean }) => {
+const CustomSider = () => {
   const { pathname, push } = useRouter()
 
   const selected = useCallback(() => pathname.match(/\/([a-z]+)/)?.shift() || "/", [pathname])
   const route = (route: string) => push(route)
 
   return (
-    <Sider trigger={null} collapsible collapsed={collapsed}>
-      <div className={classes.logo} />
-      <Menu theme="dark" mode="inline" defaultSelectedKeys={["1"]} selectedKeys={[selected()]}>
+    <Sider trigger={null} collapsible collapsed={false}>
+      <Image src={logoImg} sizes={"cover"} />
+      <Divider />
+      <Menu mode="inline" defaultSelectedKeys={["1"]} selectedKeys={[selected()]}>
         <Menu.Item key="/" icon={<VideoCameraOutlined />} onClick={() => route("/")}>
           Dashboard
         </Menu.Item>
@@ -49,7 +51,7 @@ const CustomSider = ({ collapsed }: { collapsed: boolean }) => {
   )
 }
 
-const CustomHeader = ({ collapsed, setCollapsed }) => {
+const CustomHeader = () => {
   const session = useSession()
   const [logoutMutation] = useMutation(logout)
   const router = useRouter()
@@ -72,10 +74,6 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
   return (
     <Header className={classes.header}>
       <div className={classes.headerActions}>
-        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-          className: classes.trigger,
-          onClick: () => setCollapsed((prev) => !prev),
-        })}
         <Button onClick={goBack} icon={<CaretLeftOutlined />}>
           Back
         </Button>
@@ -89,8 +87,6 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 }
 
 const LayoutComponent = ({ title, children }: LayoutProps) => {
-  const [collapsed, setCollapsed] = useState(false)
-
   return (
     <>
       <Head>
@@ -99,10 +95,10 @@ const LayoutComponent = ({ title, children }: LayoutProps) => {
       </Head>
 
       <Layout className={classes.layout}>
-        <CustomSider collapsed={collapsed} />
+        <CustomSider />
 
         <Layout className="site-layout">
-          <CustomHeader collapsed={collapsed} setCollapsed={setCollapsed} />
+          <CustomHeader />
           <Suspense fallback="Loading...">
             <Content className={classes.content}>{children}</Content>
           </Suspense>

@@ -44,14 +44,14 @@ export const LoginForm = (props: LoginFormProps) => {
             placeholder="Password"
             type="password"
           />
-          <div>
+          <div className={classes.forgotPassword}>
             <Link href={Routes.ForgotPasswordPage()}>
-              <a className={classes.forgotPassword}>Forgot your password?</a>
+              <a>Forgot your password?</a>
             </Link>
           </div>
         </Form>
 
-        <div className={classes.register}>
+        <div className={classes.authFooter}>
           <p>Or</p>
           <Link href={Routes.SignupPage()}>Sign Up</Link>
         </div>

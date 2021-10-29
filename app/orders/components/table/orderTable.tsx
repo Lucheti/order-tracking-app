@@ -8,11 +8,17 @@ const ITEMS_PER_PAGE = 20
 export const OrderTable = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
-  const [{ orders, count }] = usePaginatedQuery(getOrders, {
-    orderBy: { id: "asc" },
-    skip: ITEMS_PER_PAGE * page,
-    take: ITEMS_PER_PAGE,
-  })
+  const [data, { isLoading }] = usePaginatedQuery(
+    getOrders,
+    {
+      orderBy: { id: "asc" },
+      skip: ITEMS_PER_PAGE * page,
+      take: ITEMS_PER_PAGE,
+    },
+    {
+      suspense: false,
+    }
+  )
 
   const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
   const goToNextPage = () => router.push({ query: { page: page + 1 } })
@@ -21,14 +27,15 @@ export const OrderTable = () => {
     <div>
       <Table
         columns={columns}
-        dataSource={orders}
+        dataSource={data?.orders}
         pagination={{
           pageSize: ITEMS_PER_PAGE,
-          total: count,
+          total: data?.count,
           current: page + 1,
           onChange: (newPage) => (newPage > page ? goToNextPage() : goToPreviousPage()),
           position: ["bottomLeft"],
         }}
+        loading={isLoading}
       />
     </div>
   )

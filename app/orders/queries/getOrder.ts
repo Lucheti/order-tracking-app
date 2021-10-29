@@ -11,10 +11,17 @@ export default resolver.pipe(resolver.zod(GetOrder), resolver.authorize(), async
   // TODO: in multi-tenant app, you must add validation to ensure correct tenant
   const order = await db.order.findFirst({
     where: { id },
-    include: { products: true, invoices: true },
+    include: {
+      products: {
+        include: {
+          product: true,
+        },
+      },
+      invoices: true,
+    },
   })
 
   if (!order) throw new NotFoundError()
 
-  return order as Order
+  return order
 })

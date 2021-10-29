@@ -21,9 +21,11 @@
     gap: 1rem;
     display: flex;
     flex-direction: column;
+    min-width: 500px;
 
     h1 {
       color: #7c83fd;
+      text-align: center;
     }
 
     label {
@@ -50,8 +52,15 @@
     }
 
     .forgotPassword {
-      color: #96baff;
-      text-decoration: none;
+      display: flex;
+      justify-content: right;
+
+      a {
+        color: #96baff;
+        text-decoration: none;
+        text-align: right;
+        width: fit-content;
+      }
     }
 
     button[type="submit"] {
@@ -64,7 +73,7 @@
       box-shadow: 0 0 2px #999;
     }
 
-    .register {
+    .authFooter {
       display: flex;
       flex-direction: column;
       align-items: center;

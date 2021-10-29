@@ -26,9 +26,7 @@ const OrdersPage: BlitzPage = () => {
           </Button>
         </div>
 
-        <Suspense fallback={<div>Loading...</div>}>
-          <OrderTable />
-        </Suspense>
+        <OrderTable />
       </div>
     </>
   )

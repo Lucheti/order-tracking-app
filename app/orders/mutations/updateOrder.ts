@@ -4,36 +4,59 @@ import { z } from "zod"
 
 const UpdateOrder = z.object({
   id: z.string(),
-  direction: z.string().optional(),
-  clientId: z.string().optional(),
-  products: z.array(z.string()).optional(),
+  direction: z.string(),
+  clientId: z.string(),
+  products: z.array(z.string()),
 })
 
 export default resolver.pipe(
   resolver.zod(UpdateOrder),
   resolver.authorize(),
   async ({ id, ...data }) => {
-    const products: Product[] = await db.product.findMany({
+    console.log("DATA: ", data)
+    const products = await db.orderedProduct.findMany({
       where: {
-        id: { in: data.products },
+        orderId: id,
+      },
+      include: {
+        product: true,
       },
     })
-    const total = products.reduce((acc, next) => acc + next.price, 0)
+
+    const newProducts = data.products.filter(
+      (productId) => !products?.some((product) => product.productId === productId)
+    )
+    const deletedProducts =
+      products?.filter((product) => !data?.products?.includes(product?.productId || "")) || []
+    console.log(deletedProducts)
+
+    const total = products.reduce((acc, next) => acc + (next?.product?.price || 0), 0)
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
+
+    console.log("Products: ", products)
     const order = await db.order.update({
       where: { id },
+      include: {
+        products: {
+          include: {
+            product: true,
+          },
+        },
+        invoices: true,
+      },
       data: {
         ...data,
         total,
         products: {
-          create: products.map((product) => ({
+          create: newProducts.map((productId) => ({
             product: {
               connect: {
-                id: product.id,
+                id: productId,
               },
             },
             quantity: 1,
           })),
+          delete: deletedProducts.map(({ id }) => ({ id })),
         },
       },
     })

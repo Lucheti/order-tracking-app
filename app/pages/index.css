@@ -18,3 +18,69 @@ body {
 .input-group div input {
   width: 100%;
 }
+
+.ant-layout-sider {
+  background: transparent !important;
+  width: 300px !important;
+  padding: 1rem;
+  flex: 0 0 250px !important;
+  max-width: 250px !important;
+  min-width: 250px !important;
+  position: fixed !important;
+}
+
+.ant-layout-sider .ant-menu {
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.ant-layout-sider .ant-menu span[role="img"] {
+  padding: 0.65rem;
+  background: white;
+  border-radius: 5px;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-title-content {
+  color: #888;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item {
+  padding: 0.675rem 0.8rem 0.675rem 1rem !important;
+  margin: 0 !important;
+  height: unset;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item span[role="img"] {
+  box-shadow: 0rem 0.25rem 0.375rem -0.0625rem rgb(20 20 20 / 12%),
+    0rem 0.125rem 0.25rem -0.0625rem rgb(20 20 20 / 7%);
+  border-radius: 0.5rem;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item::after {
+  border: none;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item-selected {
+  background: white !important;
+  box-shadow: rgb(0 0 0 / 5%) 0rem 1.25rem 1.6875rem 0rem;
+  border-radius: 0.5rem;
+  border: none !important;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item-selected span[role="img"] {
+  background: #1890ff;
+  color: white;
+}
+
+.ant-layout-sider .ant-menu .ant-menu-item-selected .ant-menu-title-content {
+  color: #333;
+  font-weight: 500;
+}
+
+.site-layout {
+  padding: 1.5rem;
+  gap: 1rem;
+  margin-left: 250px;
+}
