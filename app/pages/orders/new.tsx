@@ -2,14 +2,17 @@ import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createOrder, { CreateOrder } from "app/orders/mutations/createOrder"
 import { OrderForm, FORM_ERROR } from "app/orders/components/OrderForm"
+import classes from "./orderPage.module.scss"
 
 const NewOrderPage: BlitzPage = () => {
   const router = useRouter()
   const [createOrderMutation] = useMutation(createOrder)
 
   return (
-    <div>
-      <h1>Create New Order</h1>
+    <div className={classes.newOrderPage}>
+      <div className={classes.header}>
+        <h2>New Order</h2>
+      </div>
 
       <OrderForm
         submitText="Create Order"
@@ -30,12 +33,6 @@ const NewOrderPage: BlitzPage = () => {
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.OrdersPage()}>
-          <a>Orders</a>
-        </Link>
-      </p>
     </div>
   )
 }

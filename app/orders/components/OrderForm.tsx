@@ -35,6 +35,9 @@ export function OrderForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
             }))
           }
           mode={"multiple"}
+          fieldProps={{
+            defaultValue: [],
+          }}
         />
       </div>
     </Form>

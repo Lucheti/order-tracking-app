@@ -2,7 +2,7 @@ import { Suspense } from "react"
 import { BlitzPage, Head, Link, Routes, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import { OrderTable } from "../../orders/components/table/orderTable"
-import classes from "./productPage.module.scss"
+import classes from "./orderPage.module.scss"
 import { Button } from "antd"
 
 const OrdersPage: BlitzPage = () => {
@@ -14,7 +14,7 @@ const OrdersPage: BlitzPage = () => {
         <title>Orders</title>
       </Head>
 
-      <div className={classes.productPage}>
+      <div className={classes.orderPage}>
         <div className={classes.header}>
           <h2> Orders </h2>
 

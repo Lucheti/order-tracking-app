@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Client" ALTER COLUMN "cuil" SET DATA TYPE TEXT;

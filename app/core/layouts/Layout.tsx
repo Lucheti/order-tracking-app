@@ -38,6 +38,9 @@ const CustomSider = ({ collapsed }: { collapsed: boolean }) => {
         <Menu.Item key="/products" icon={<UserOutlined />} onClick={() => route("/products")}>
           Products
         </Menu.Item>
+        <Menu.Item key="/clients" icon={<UserOutlined />} onClick={() => route("/clients")}>
+          Clients
+        </Menu.Item>
         <Menu.Item key="/invoices" icon={<UploadOutlined />}>
           Invoices
         </Menu.Item>

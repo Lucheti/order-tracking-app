@@ -9,13 +9,10 @@ import { Button } from "antd"
 const NewProductPage: BlitzPage = () => {
   const router = useRouter()
   const [createProductMutation] = useMutation(createProduct)
-  const goBack = () => router.back()
 
   return (
     <div className={classes.newProductPage}>
       <div className={classes.header}>
-        <CaretLeftOutlined onClick={goBack} />
-
         <h2>New Product</h2>
       </div>
 

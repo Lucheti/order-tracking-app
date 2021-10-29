@@ -24,9 +24,11 @@ const ClientColumn = ({ order }: { order: Order }) => {
     }
   )
   return (
-    <p>
-      {client?.name} {client?.surname}
-    </p>
+    <Link href={Routes.ShowClientPage({ clientId: client.id })}>
+      <a>
+        {client?.name} {client?.surname}
+      </a>
+    </Link>
   )
 }
 

@@ -14,7 +14,7 @@ interface LabeledSelectField<T> {
   /** Field type. Doesn't include radio buttons and checkboxes */
   outerProps?: PropsWithoutRef<JSX.IntrinsicElements["div"]>
   labelProps?: ComponentPropsWithoutRef<"label">
-  fieldProps?: UseFieldConfig<string>
+  fieldProps?: UseFieldConfig<T[]>
   dataProvider: (...args: any[]) => Promise<T>
   dataMapper: (data: T) => { label: string; value: any }[]
   mode?: "multiple"
