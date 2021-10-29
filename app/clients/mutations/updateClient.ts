@@ -9,7 +9,7 @@ const UpdateClient = z.object({
   phone: z.string().optional(),
   email: z.string().optional(),
   birthdate: z.date().optional(),
-  cuil: z.number().optional(),
+  cuil: z.string().optional(),
   businessName: z.string().optional(),
 })
 

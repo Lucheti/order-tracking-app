@@ -7,7 +7,7 @@ import { ClientForm, FORM_ERROR } from "app/clients/components/ClientForm"
 
 export const EditClient = () => {
   const router = useRouter()
-  const clientId = useParam("clientId", "number")
+  const clientId = useParam("clientId", "string")
   const [client, { setQueryData }] = useQuery(
     getClient,
     { id: clientId },
