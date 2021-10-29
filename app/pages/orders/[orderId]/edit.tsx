@@ -4,8 +4,6 @@ import Layout from "app/core/layouts/Layout"
 import getOrder from "app/orders/queries/getOrder"
 import updateOrder from "app/orders/mutations/updateOrder"
 import { OrderForm, FORM_ERROR } from "app/orders/components/OrderForm"
-import { Property } from "csstype"
-import Order = Property.Order
 
 export const EditOrder = () => {
   const router = useRouter()
