@@ -2,9 +2,8 @@ import { forwardRef, ComponentPropsWithoutRef, PropsWithoutRef } from "react"
 import { useField, UseFieldConfig } from "react-final-form"
 import "antd/lib/input/style/index.css"
 import classes from "./inputs.module.scss"
-import { Select } from "antd"
 import { usePaginatedQuery } from "blitz"
-import getOrders from "../../orders/queries/getOrders"
+import { Select } from "antd"
 
 interface LabeledSelectField<T> {
   /** Field name. */
@@ -30,15 +29,12 @@ export function LabeledSelectField<T>(props: LabeledSelectField<T>) {
         input,
         meta: { touched, error, submitError, submitting },
       } = useField(name, {
-        parse: (v) => {
-          console.info(v)
-          return v
-        },
+        parse: (v) => v,
         multiple: mode === "multiple",
         ...fieldProps,
       })
 
-      const [data] = usePaginatedQuery(dataProvider, {
+      const [data, { isLoading, isFetching }] = usePaginatedQuery(dataProvider, {
         orderBy: { id: "asc" },
       })
 
@@ -55,6 +51,7 @@ export function LabeledSelectField<T>(props: LabeledSelectField<T>) {
               ref={ref}
               style={{ width: "100%" }}
               mode={mode}
+              loading={isLoading || isFetching}
             >
               {dataMapper(data).map(({ label, value }) => (
                 <Select.Option key={value} value={value}>

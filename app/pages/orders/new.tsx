@@ -19,7 +19,7 @@ const NewOrderPage: BlitzPage = () => {
         // TODO use a zod schema for form validation
         //  - Tip: extract mutation's schema into a shared `validations.ts` file and
         //         then import and use it here
-        schema={CreateOrder}
+        // schema={CreateOrder}
         initialValues={{}}
         onSubmit={async (values) => {
           try {
@@ -28,7 +28,7 @@ const NewOrderPage: BlitzPage = () => {
           } catch (error: any) {
             console.error(error)
             return {
-              [FORM_ERROR]: error.toString(),
+              [FORM_ERROR]: "error.toString()",
             }
           }
         }}
@@ -38,6 +38,7 @@ const NewOrderPage: BlitzPage = () => {
 }
 
 NewOrderPage.authenticate = true
+NewOrderPage.suppressFirstRenderFlicker = true
 NewOrderPage.getLayout = (page) => <Layout title={"Create New Order"}>{page}</Layout>
 
 export default NewOrderPage

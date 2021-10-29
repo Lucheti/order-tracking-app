@@ -33,12 +33,6 @@ const NewClientPage: BlitzPage = () => {
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.ClientsPage()}>
-          <a>Clients</a>
-        </Link>
-      </p>
     </div>
   )
 }

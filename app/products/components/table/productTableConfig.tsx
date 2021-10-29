@@ -3,7 +3,6 @@ import { Order, Product } from "db"
 import { Space } from "antd"
 import { Link, Routes, useMutation, useRouter } from "blitz"
 import React from "react"
-import deleteOrder from "../../../orders/mutations/deleteOrder"
 import deleteProduct from "../../mutations/deleteProduct"
 
 const createCol = (title: string): ColumnGroupType<Product> | ColumnType<Product> => ({
