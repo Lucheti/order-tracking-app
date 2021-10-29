@@ -35,13 +35,27 @@ export const SignupForm = (props: SignupFormProps) => {
             }
           }}
         >
-          <LabeledTextField name="email" label="Email" placeholder="Email" />
-          <LabeledTextField
-            name="password"
-            label="Password"
-            placeholder="Password"
-            type="password"
-          />
+          <div className={classes.inputGroup}>
+            <LabeledTextField name="name" label="Name" placeholder="Name" />
+            <LabeledTextField name="surname" label="Surname" placeholder="Surname" />
+          </div>
+
+          <div className={classes.inputGroup}>
+            <LabeledTextField name="phone" label="Phone" placeholder="Phone" inputMode={"tel"} />
+          </div>
+
+          <div className={classes.inputGroup}>
+            <LabeledTextField name="email" label="Email" placeholder="Email" />
+          </div>
+
+          <div className={classes.inputGroup}>
+            <LabeledTextField
+              name="password"
+              label="Password"
+              placeholder="Password"
+              type="password"
+            />
+          </div>
         </Form>
       </div>
     </div>

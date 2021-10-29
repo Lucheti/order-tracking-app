@@ -1,23 +1,27 @@
-import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
+import { BlitzPage, Link, Routes, useMutation, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import createProduct from "app/products/mutations/createProduct"
-import { ProductForm, FORM_ERROR } from "app/products/components/ProductForm"
+import createProduct, { CreateProduct } from "app/products/mutations/createProduct"
+import { FORM_ERROR, ProductForm } from "app/products/components/ProductForm"
+import classes from "./productPage.module.scss"
+import { CaretLeftOutlined } from "@ant-design/icons"
+import { Button } from "antd"
 
 const NewProductPage: BlitzPage = () => {
   const router = useRouter()
   const [createProductMutation] = useMutation(createProduct)
+  const goBack = () => router.back()
 
   return (
-    <div>
-      <h1>Create New Product</h1>
+    <div className={classes.newProductPage}>
+      <div className={classes.header}>
+        <CaretLeftOutlined onClick={goBack} />
+
+        <h2>New Product</h2>
+      </div>
 
       <ProductForm
         submitText="Create Product"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateProduct}
-        // initialValues={{}}
+        schema={CreateProduct}
         onSubmit={async (values) => {
           try {
             const product = await createProductMutation(values)
@@ -30,12 +34,6 @@ const NewProductPage: BlitzPage = () => {
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.ProductsPage()}>
-          <a>Products</a>
-        </Link>
-      </p>
     </div>
   )
 }

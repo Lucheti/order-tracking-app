@@ -3,8 +3,14 @@ import db from "db"
 import { z } from "zod"
 
 const UpdateClient = z.object({
-  id: z.number(),
-  name: z.string(),
+  id: z.string(),
+  name: z.string().optional(),
+  surname: z.string().optional(),
+  phone: z.string().optional(),
+  email: z.string().optional(),
+  birthdate: z.date().optional(),
+  cuil: z.number().optional(),
+  businessName: z.string().optional(),
 })
 
 export default resolver.pipe(

@@ -1,0 +1,138 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String [not null]
+  surname String [not null]
+  phone String
+  email String [unique, not null]
+  hashedPassword String
+  role String [not null, default: 'USER']
+  tokens Token [not null]
+  sessions Session [not null]
+}
+
+Table Client {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  name String [not null]
+  surname String
+  phone String
+  email String [unique, not null]
+  birthdate DateTime
+  cuil Int
+  businessName String
+  Order Order [not null]
+  Invoice Invoice [not null]
+}
+
+Table Session {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  expiresAt DateTime
+  handle String [unique, not null]
+  hashedSessionToken String
+  antiCSRFToken String
+  publicData String
+  privateData String
+  user User
+  userId String
+}
+
+Table Token {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  hashedToken String [not null]
+  type String [not null]
+  expiresAt DateTime [not null]
+  sentTo String [not null]
+  user User [not null]
+  userId String [not null]
+
+  indexes {
+    (hashedToken, type) [unique]
+  }
+}
+
+Table Order {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  total Int [not null]
+  invoiced Boolean [not null, default: false]
+  picking Boolean [not null, default: false]
+  direction String [not null]
+  client Client [not null]
+  clientId String [not null]
+  products OrderedProduct [not null]
+  Invoice Invoice [not null]
+}
+
+Table OrderedProduct {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Product Product [not null]
+  quantity Int [not null]
+  Order Order
+  orderId String
+}
+
+Table Product {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  model String [not null]
+  brand String [not null]
+  stock Int [not null]
+  location String [not null]
+  description String
+  OrderedProduct OrderedProduct [not null]
+}
+
+Table Invoice {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  type String [not null]
+  iva Float [not null]
+  client Client [not null]
+  order Order [not null]
+  clientId String [not null]
+  orderId String [not null]
+  CreditNote CreditNote [not null]
+}
+
+Table CreditNote {
+  id String [pk]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  invoice Invoice [not null]
+  invoiceId String [not null]
+}
+
+Table OrderedProductToProduct {
+  productId String [ref: > Product.id]
+  orderedproductId String [ref: > OrderedProduct.id]
+}
+
+Ref: Session.userId > User.id
+
+Ref: Token.userId > User.id
+
+Ref: Order.clientId > Client.id
+
+Ref: OrderedProduct.orderId > Order.id
+
+Ref: Invoice.clientId > Client.id
+
+Ref: Invoice.orderId > Order.id
+
+Ref: CreditNote.invoiceId > Invoice.id

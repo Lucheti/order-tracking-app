@@ -2,12 +2,12 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgres"
   url      = env("DATABASE_URL")
 }
 
 generator client {
-  provider = "prisma-dbml-generator"
+  provider = "prisma-client-js"
 }
 
 // --------------------------------------
@@ -19,7 +19,7 @@ model User {
 
   //basic data
   name           String
-  surname        String?
+  surname        String
   phone          String?
   email          String  @unique
   hashedPassword String?
@@ -43,8 +43,8 @@ model Client {
   cuil         Int?
   businessName String?
 
-  Order   Order[]
-  Invoice Invoice[]
+  order   Order[]
+  invoice Invoice[]
 }
 
 model Session {
@@ -91,18 +91,20 @@ model Order {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  total     Int
-  invoiced  Boolean @default(false)
-  picking   Boolean @default(false)
+  // these fields are calculated
+  total    Int
+  invoiced Boolean @default(false)
+  picking  Boolean @default(false)
+
+  // basic data
   direction String
 
-
+  // relations
   client   Client @relation(fields: [clientId], references: [id])
   clientId String
 
   products OrderedProduct[]
-  Product  Product[]
-  Invoice  Invoice[]
+  invoices Invoice[]
 }
 
 model OrderedProduct {
@@ -110,11 +112,12 @@ model OrderedProduct {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Product   Product @relation(fields: [productId], references: [id])
-  quantity  Int
-  Order     Order?  @relation(fields: [orderId], references: [id])
+  quantity Int
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?
+  Order     Order?   @relation(fields: [orderId], references: [id])
   orderId   String?
-  productId String
 }
 
 model Product {
@@ -127,9 +130,8 @@ model Product {
   stock          Int
   location       String
   description    String?
-  Order          Order?           @relation(fields: [orderId], references: [id])
-  orderId        String?
   OrderedProduct OrderedProduct[]
+  price          Int
 }
 
 model Invoice {

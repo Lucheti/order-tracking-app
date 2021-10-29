@@ -1,60 +1,33 @@
 import { Suspense } from "react"
-import { Head, Link, usePaginatedQuery, useRouter, BlitzPage, Routes } from "blitz"
+import { BlitzPage, Head, Link, Routes, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import getOrders from "app/orders/queries/getOrders"
-
-const ITEMS_PER_PAGE = 100
-
-export const OrdersList = () => {
-  const router = useRouter()
-  const page = Number(router.query.page) || 0
-  const [{ orders, hasMore }] = usePaginatedQuery(getOrders, {
-    orderBy: { id: "asc" },
-    skip: ITEMS_PER_PAGE * page,
-    take: ITEMS_PER_PAGE,
-  })
-
-  const goToPreviousPage = () => router.push({ query: { page: page - 1 } })
-  const goToNextPage = () => router.push({ query: { page: page + 1 } })
-
-  return (
-    <div>
-      <ul>
-        {orders.map((order) => (
-          <li key={order.id}>
-            <Link href={Routes.ShowOrderPage({ orderId: order.id })}>
-              <a>{order.id}</a>
-            </Link>
-          </li>
-        ))}
-      </ul>
-
-      <button disabled={page === 0} onClick={goToPreviousPage}>
-        Previous
-      </button>
-      <button disabled={!hasMore} onClick={goToNextPage}>
-        Next
-      </button>
-    </div>
-  )
-}
+import { OrderTable } from "../../orders/components/table/orderTable"
+import classes from "./productPage.module.scss"
+import { Button } from "antd"
 
 const OrdersPage: BlitzPage = () => {
+  const { push } = useRouter()
+
   return (
     <>
       <Head>
         <title>Orders</title>
       </Head>
 
-      <div>
-        <p>
-          <Link href={Routes.NewOrderPage()}>
-            <a>Create Order</a>
-          </Link>
-        </p>
+      <div className={classes.productPage}>
+        <div className={classes.header}>
+          <h2> Orders </h2>
+
+          <Button
+            type={"primary"}
+            onClick={() => push(Routes.NewOrderPage(), undefined, { shallow: true })}
+          >
+            New Order
+          </Button>
+        </div>
 
         <Suspense fallback={<div>Loading...</div>}>
-          <OrdersList />
+          <OrderTable />
         </Suspense>
       </div>
     </>

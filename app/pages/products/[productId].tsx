@@ -6,7 +6,7 @@ import deleteProduct from "app/products/mutations/deleteProduct"
 
 export const Product = () => {
   const router = useRouter()
-  const productId = useParam("productId", "number")
+  const productId = useParam("productId", "string")
   const [deleteProductMutation] = useMutation(deleteProduct)
   const [product] = useQuery(getProduct, { id: productId })
 

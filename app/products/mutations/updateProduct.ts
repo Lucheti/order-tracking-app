@@ -3,8 +3,12 @@ import db from "db"
 import { z } from "zod"
 
 const UpdateProduct = z.object({
-  id: z.number(),
-  name: z.string(),
+  id: z.string(),
+  model: z.string(),
+  brand: z.string(),
+  stock: z.number(),
+  location: z.string(),
+  description: z.string().optional().nullable(),
 })
 
 export default resolver.pipe(

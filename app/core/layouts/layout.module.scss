@@ -4,6 +4,11 @@
   line-height: 64px;
   cursor: pointer;
   transition: color 0.3s;
+  background: #001528;
+  color: white;
+  vertical-align: top;
+  position: relative;
+
   &:hover {
     color: #1890ff;
   }
@@ -18,9 +23,15 @@
 .header {
   background: #fff;
   width: 100%;
-  padding: 0 2rem;
+  padding: 0 2rem 0 0;
   display: flex;
   justify-content: space-between;
+
+  .headerActions {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
 }
 
 .dropdown {

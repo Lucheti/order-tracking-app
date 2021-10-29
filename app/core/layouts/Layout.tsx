@@ -1,17 +1,18 @@
-import React, { ReactNode, Suspense, useCallback, useEffect, useState } from "react"
+import React, { ReactNode, Suspense, useCallback, useState } from "react"
 import { Head, useMutation, useRouter, useSession } from "blitz"
-import { Avatar, Dropdown, Layout, Menu } from "antd"
+import { Avatar, Button, Dropdown, Layout, Menu } from "antd"
 import {
-  MenuUnfoldOutlined,
+  CaretLeftOutlined,
   MenuFoldOutlined,
+  MenuUnfoldOutlined,
+  UploadOutlined,
   UserOutlined,
   VideoCameraOutlined,
-  UploadOutlined,
 } from "@ant-design/icons"
-
-const { Header, Sider, Content } = Layout
 import classes from "./layout.module.scss"
 import logout from "../../auth/mutations/logout"
+
+const { Header, Sider, Content } = Layout
 
 type LayoutProps = {
   title?: string
@@ -32,10 +33,13 @@ const CustomSider = ({ collapsed }: { collapsed: boolean }) => {
           Dashboard
         </Menu.Item>
         <Menu.Item key="/orders" icon={<UserOutlined />} onClick={() => route("/orders")}>
-          Ordenes
+          Orders
+        </Menu.Item>
+        <Menu.Item key="/products" icon={<UserOutlined />} onClick={() => route("/products")}>
+          Products
         </Menu.Item>
         <Menu.Item key="/invoices" icon={<UploadOutlined />}>
-          Facturas
+          Invoices
         </Menu.Item>
       </Menu>
     </Sider>
@@ -45,6 +49,9 @@ const CustomSider = ({ collapsed }: { collapsed: boolean }) => {
 const CustomHeader = ({ collapsed, setCollapsed }) => {
   const session = useSession()
   const [logoutMutation] = useMutation(logout)
+  const router = useRouter()
+  const goBack = () => router.back()
+
   const menu = (
     <Menu className={classes.dropdown}>
       <Menu.Item
@@ -61,10 +68,15 @@ const CustomHeader = ({ collapsed, setCollapsed }) => {
 
   return (
     <Header className={classes.header}>
-      {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-        className: classes.trigger,
-        onClick: () => setCollapsed((prev) => !prev),
-      })}
+      <div className={classes.headerActions}>
+        {React.createElement(collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+          className: classes.trigger,
+          onClick: () => setCollapsed((prev) => !prev),
+        })}
+        <Button onClick={goBack} icon={<CaretLeftOutlined />}>
+          Back
+        </Button>
+      </div>
 
       <Dropdown overlay={menu}>
         <Avatar className={classes.avatar}>{session.name && session.name[0]}</Avatar>

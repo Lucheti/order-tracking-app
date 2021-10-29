@@ -30,8 +30,20 @@
       color: #333;
     }
 
+    .inputGroup {
+      display: flex;
+      gap: 2rem;
+
+      div:first-child {
+        flex: 1;
+
+        input {
+          width: 100%;
+        }
+      }
+    }
+
     input {
-      width: 400px;
       border: 1px solid #333;
       box-sizing: border-box;
       padding: 0.5rem 1rem;
