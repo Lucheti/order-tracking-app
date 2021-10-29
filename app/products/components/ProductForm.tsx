@@ -18,6 +18,7 @@ export function ProductForm<S extends z.ZodType<any, any>>(props: FormProps<S>) 
       </div>
 
       <div className={"input-group"}>
+        <LabeledTextField name="price" label="Price" placeholder="Price" type={"number"} />
         <LabeledTextAreaField
           name="description"
           label="Description (Optional)"

@@ -130,7 +130,7 @@ model Product {
   stock          Int
   location       String
   description    String?
-  OrderedProduct OrderedProduct[]
+  orderedProduct OrderedProduct[]
   price          Int
 }
 

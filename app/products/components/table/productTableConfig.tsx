@@ -1,6 +1,5 @@
 import { ColumnGroupType, ColumnsType, ColumnType } from "antd/lib/table/interface"
 import { Product } from "db"
-import createProduct from "../../mutations/createProduct"
 import { Space } from "antd"
 import { Link, Routes } from "blitz"
 import React from "react"
