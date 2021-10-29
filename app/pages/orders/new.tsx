@@ -1,8 +1,7 @@
 import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
-import createOrder from "app/orders/mutations/createOrder"
+import createOrder, { CreateOrder } from "app/orders/mutations/createOrder"
 import { OrderForm, FORM_ERROR } from "app/orders/components/OrderForm"
-import { CreateOrder } from "app/orders/mutations/createOrder"
 
 const NewOrderPage: BlitzPage = () => {
   const router = useRouter()
