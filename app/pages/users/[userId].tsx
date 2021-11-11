@@ -6,7 +6,7 @@ import deleteUser from "app/users/mutations/deleteUser"
 
 export const User = () => {
   const router = useRouter()
-  const userId = useParam("userId", "number")
+  const userId = useParam("userId", "string")
   const [deleteUserMutation] = useMutation(deleteUser)
   const [user] = useQuery(getUser, { id: userId })
 

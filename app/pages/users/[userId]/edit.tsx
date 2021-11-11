@@ -8,7 +8,7 @@ import { message } from "antd"
 
 export const EditUser = () => {
   const router = useRouter()
-  const userId = useParam("userId", "number")
+  const userId = useParam("userId", "string")
   const [user, { setQueryData }] = useQuery(
     getUser,
     { id: userId },
