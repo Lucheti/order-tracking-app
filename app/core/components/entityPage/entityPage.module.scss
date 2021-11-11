@@ -1,0 +1,35 @@
+.entityPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+  p {
+    margin: 0;
+  }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+}
+
+.newEntityPage {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+
+  .header {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+
+    h2 {
+      margin: 0;
+    }
+
+    span {
+      font-size: 20pt;
+    }
+  }
+}

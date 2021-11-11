@@ -11,6 +11,7 @@ import LoginForm from "app/auth/components/LoginForm"
 import "./index.css"
 import "antd/dist/antd.css"
 import { Suspense } from "react"
+import { useEnsurePermissions } from "../auth/hooks/useEnsurePermisions"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)

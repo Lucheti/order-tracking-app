@@ -12,6 +12,21 @@ generator client {
 
 // --------------------------------------
 
+enum Role {
+  ADMIN
+  LOGISTICS
+  PAYROLL
+  NONE
+}
+
+enum Permision {
+  ALL
+  CREATE
+  READ
+  UPDATE
+  DELETE
+}
+
 model User {
   id        String   @id @default(uuid())
   createdAt DateTime @default(now())
@@ -23,11 +38,26 @@ model User {
   phone          String?
   email          String  @unique
   hashedPassword String?
-  role           String  @default("USER")
+  role           Role    @default(NONE)
 
   //relations
   tokens   Token[]
   sessions Session[]
+}
+
+model UserPermision {
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  //basic data
+  client  Boolean @default(false)
+  product Boolean @default(false)
+  orders  Boolean @default(false)
+  users   Boolean @default(false)
+
+  //relations
+  role Role
 }
 
 model Client {
@@ -40,7 +70,7 @@ model Client {
   phone        String?
   email        String    @unique
   birthdate    DateTime?
-  cuil         String?
+  cuil         String?   @unique
   businessName String?
 
   order   Order[]
@@ -104,7 +134,7 @@ model Order {
   clientId String
 
   products OrderedProduct[]
-  invoices Invoice[]
+  invoice  Invoice?
 }
 
 model OrderedProduct {
@@ -135,17 +165,21 @@ model Product {
 }
 
 model Invoice {
-  id        String   @id
+  id        String   @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  type String
-  iva  Float
+  type          String
+  iva           Float
+  discount      Int      @default(0)
+  address       String
+  availableFrom DateTime
+  availableTo   DateTime
 
   client     Client       @relation(fields: [clientId], references: [id])
   order      Order        @relation(fields: [orderId], references: [id])
   clientId   String
-  orderId    String
+  orderId    String       @unique
   CreditNote CreditNote[]
 }
 

@@ -1,9 +1,11 @@
 import { Link, Routes, useMutation } from "blitz"
-import { LabeledTextField } from "app/core/components/LabeledTextField"
-import { Form, FORM_ERROR } from "app/core/components/Form"
+import { Form } from "app/core/components/Form"
 import signup from "app/auth/mutations/signup"
 import { Signup } from "app/auth/validations"
 import classes from "./AuthForm.module.scss"
+import { Form as ANTDForm, Input, message } from "antd"
+
+const { Item } = ANTDForm
 
 type SignupFormProps = {
   onSuccess?: () => void
@@ -28,33 +30,65 @@ export const SignupForm = (props: SignupFormProps) => {
             } catch (error: any) {
               if (error.code === "P2002" && error.meta?.target?.includes("email")) {
                 // This error comes from Prisma
-                return { email: "This email is already being used" }
+                message.error("This email is already being used", 10)
               } else {
-                return { [FORM_ERROR]: error.toString() }
+                message.error(error.toString())
               }
             }
           }}
         >
           <div className={classes.inputGroup}>
-            <LabeledTextField name="name" label="Name" placeholder="Name" />
-            <LabeledTextField name="surname" label="Surname" placeholder="Surname" />
+            <Item
+              name="name"
+              label="Name"
+              style={{ marginBottom: 0 }}
+              rules={[{ required: true, message: "This field is required!" }]}
+            >
+              <Input placeholder="Name" />
+            </Item>
+            <Item
+              name="surname"
+              label="Surname"
+              style={{ marginBottom: 0 }}
+              rules={[{ required: true, message: "This field is required!" }]}
+            >
+              <Input placeholder="Surname" />
+            </Item>
           </div>
 
           <div className={classes.inputGroup}>
-            <LabeledTextField name="phone" label="Phone" placeholder="Phone" inputMode={"tel"} />
+            <Item
+              name="phone"
+              label="Phone"
+              style={{ marginBottom: 0 }}
+              rules={[{ required: true, message: "This field is required!" }]}
+            >
+              <Input placeholder="Phone" type={"tel"} />
+            </Item>
           </div>
 
           <div className={classes.inputGroup}>
-            <LabeledTextField name="email" label="Email" placeholder="Email" />
+            <Item
+              name="email"
+              label="Email"
+              style={{ marginBottom: 0 }}
+              rules={[{ required: true, message: "This field is required!" }]}
+            >
+              <Input placeholder="Email" />
+            </Item>
           </div>
 
           <div className={classes.inputGroup}>
-            <LabeledTextField
+            <Item
               name="password"
               label="Password"
-              placeholder="Password"
-              type="password"
-            />
+              rules={[
+                { required: true, message: "This field is required!" },
+                { min: 10, message: "Password must be at least 10 characters" },
+              ]}
+            >
+              <Input placeholder="Password" type={"password"} />
+            </Item>
           </div>
         </Form>
 

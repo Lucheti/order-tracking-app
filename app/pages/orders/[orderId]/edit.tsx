@@ -1,14 +1,24 @@
 import { Suspense } from "react"
-import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Routes } from "blitz"
+import {
+  Head,
+  Link,
+  useRouter,
+  useQuery,
+  useMutation,
+  useParam,
+  BlitzPage,
+  Routes,
+  invalidateQuery,
+} from "blitz"
 import Layout from "app/core/layouts/Layout"
 import getOrder from "app/orders/queries/getOrder"
 import updateOrder from "app/orders/mutations/updateOrder"
-import { OrderForm, FORM_ERROR } from "app/orders/components/OrderForm"
+import { OrderForm } from "app/orders/components/OrderForm"
 
 export const EditOrder = () => {
   const router = useRouter()
   const orderId = useParam("orderId", "string")
-  const [order, { setQueryData }] = useQuery(
+  const [order] = useQuery(
     getOrder,
     { id: orderId },
     {
@@ -43,13 +53,10 @@ export const EditOrder = () => {
                 id: order.id,
                 ...values,
               })
-              await setQueryData(updated)
+              invalidateQuery(getOrder)
               router.push(Routes.ShowOrderPage({ orderId: updated.id }))
             } catch (error: any) {
               console.error(error)
-              return {
-                [FORM_ERROR]: error.toString(),
-              }
             }
           }}
         />

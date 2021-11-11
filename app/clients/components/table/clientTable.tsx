@@ -2,13 +2,14 @@ import { usePaginatedQuery, useRouter } from "blitz"
 import { Table } from "antd"
 import { columns } from "./clientTableConfig"
 import getClients from "../../queries/getClients"
+import { useEnsurePermissions } from "../../../auth/hooks/useEnsurePermisions"
 
 const ITEMS_PER_PAGE = 20
 
 export const ClientTable = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
-  const [{ clients, count }] = usePaginatedQuery(getClients, {
+  const [{ clients, count }, { isLoading }] = usePaginatedQuery(getClients, {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
@@ -29,6 +30,7 @@ export const ClientTable = () => {
           onChange: (newPage) => (newPage > page ? goToNextPage() : goToPreviousPage()),
           position: ["bottomLeft"],
         }}
+        loading={isLoading}
       />
     </div>
   )

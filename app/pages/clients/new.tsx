@@ -1,8 +1,9 @@
-import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
+import { BlitzPage, Routes, useMutation, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createClient from "app/clients/mutations/createClient"
-import { ClientForm, FORM_ERROR } from "app/clients/components/ClientForm"
+import { ClientForm } from "app/clients/components/ClientForm"
 import classes from "./clientPage.module.scss"
+import { message } from "antd"
 
 const NewClientPage: BlitzPage = () => {
   const router = useRouter()
@@ -16,20 +17,15 @@ const NewClientPage: BlitzPage = () => {
 
       <ClientForm
         submitText="Create Client"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateClient}
-        // initialValues={{}}
         onSubmit={async (values) => {
           try {
             const client = await createClientMutation(values)
+            message.success({
+              content: `Created client ${client.name} ${client.surname}`,
+            })
             router.push(Routes.ShowClientPage({ clientId: client.id }))
-          } catch (error: any) {
-            console.error(error)
-            return {
-              [FORM_ERROR]: error.toString(),
-            }
+          } catch (err: any) {
+            message.error(err.message, 10)
           }
         }}
       />

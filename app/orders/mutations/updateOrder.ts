@@ -13,7 +13,6 @@ export default resolver.pipe(
   resolver.zod(UpdateOrder),
   resolver.authorize(),
   async ({ id, ...data }) => {
-    console.log("DATA: ", data)
     const products = await db.orderedProduct.findMany({
       where: {
         orderId: id,
@@ -28,12 +27,10 @@ export default resolver.pipe(
     )
     const deletedProducts =
       products?.filter((product) => !data?.products?.includes(product?.productId || "")) || []
-    console.log(deletedProducts)
 
     const total = products.reduce((acc, next) => acc + (next?.product?.price || 0), 0)
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
 
-    console.log("Products: ", products)
     const order = await db.order.update({
       where: { id },
       include: {

@@ -1,5 +1,5 @@
 import React, { ReactNode, Suspense, useCallback, useState } from "react"
-import { Head, Image, useMutation, useRouter, useSession } from "blitz"
+import { Head, Image, useMutation, useRouter, useSession, Routes, Link, useQuery } from "blitz"
 import { Avatar, Button, Divider, Dropdown, Layout, Menu } from "antd"
 import {
   CaretLeftOutlined,
@@ -12,6 +12,10 @@ import {
 import classes from "./layout.module.scss"
 import logout from "../../auth/mutations/logout"
 import logoImg from "public/logo-eyewear.png"
+import { useCurrentUser } from "../hooks/useCurrentUser"
+import getUserPermision from "../../user-permisions/queries/getUserPermision"
+import { Role } from "db"
+import { useEnsurePermissions } from "../../auth/hooks/useEnsurePermisions"
 
 const { Header, Sider, Content } = Layout
 
@@ -21,31 +25,45 @@ type LayoutProps = {
 }
 
 const CustomSider = () => {
-  const { pathname, push } = useRouter()
-
-  const selected = useCallback(() => pathname.match(/\/([a-z]+)/)?.shift() || "/", [pathname])
-  const route = (route: string) => push(route)
+  const { pathname } = useRouter()
+  const currentUser = useCurrentUser()
+  const [permissions] = useQuery(getUserPermision, { role: currentUser?.role })
+  const selected = useCallback(() => pathname.match(/\/([a-z\-]+)/)?.shift() || "/", [pathname])
 
   return (
     <Sider trigger={null} collapsible collapsed={false}>
       <Image src={logoImg} sizes={"cover"} />
       <Divider />
-      <Menu mode="inline" defaultSelectedKeys={["1"]} selectedKeys={[selected()]}>
-        <Menu.Item key="/" icon={<VideoCameraOutlined />} onClick={() => route("/")}>
-          Dashboard
+      <Menu mode="inline" defaultSelectedKeys={["/"]} selectedKeys={[selected()]}>
+        <Divider orientation="left"> General </Divider>
+        <Menu.Item key={Routes.Home().pathname} icon={<VideoCameraOutlined />}>
+          <Link href={Routes.Home()}>Dashboard</Link>
         </Menu.Item>
-        <Menu.Item key="/orders" icon={<UserOutlined />} onClick={() => route("/orders")}>
-          Orders
-        </Menu.Item>
-        <Menu.Item key="/products" icon={<UserOutlined />} onClick={() => route("/products")}>
-          Products
-        </Menu.Item>
-        <Menu.Item key="/clients" icon={<UserOutlined />} onClick={() => route("/clients")}>
-          Clients
-        </Menu.Item>
-        <Menu.Item key="/invoices" icon={<UploadOutlined />}>
-          Invoices
-        </Menu.Item>
+        {permissions?.orders && (
+          <Menu.Item key={Routes.OrdersPage().pathname} icon={<UserOutlined />}>
+            <Link href={Routes.OrdersPage()}>Orders</Link>
+          </Menu.Item>
+        )}
+        {permissions?.product && (
+          <Menu.Item key={Routes.ProductsPage().pathname} icon={<UserOutlined />}>
+            <Link href={Routes.ProductsPage()}>Products</Link>
+          </Menu.Item>
+        )}
+        {permissions?.client && (
+          <Menu.Item key={Routes.ClientsPage().pathname} icon={<UserOutlined />}>
+            <Link href={Routes.ClientsPage()}>Clients</Link>
+          </Menu.Item>
+        )}
+
+        {currentUser?.role === Role.ADMIN && (
+          <>
+            <Divider orientation="left"> Admin </Divider>
+
+            <Menu.Item key={Routes.UserPermisionsPage().pathname} icon={<UploadOutlined />}>
+              <Link href={Routes.UserPermisionsPage()}>Permissions</Link>
+            </Menu.Item>
+          </>
+        )}
       </Menu>
     </Sider>
   )
@@ -87,6 +105,7 @@ const CustomHeader = () => {
 }
 
 const LayoutComponent = ({ title, children }: LayoutProps) => {
+  useEnsurePermissions()
   return (
     <>
       <Head>

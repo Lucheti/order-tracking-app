@@ -1,36 +1,14 @@
-import { Suspense } from "react"
-import { BlitzPage, Head, Link, Routes, useRouter } from "blitz"
+import { AuthenticationError, BlitzPage, ErrorBoundary, Routes, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
+import { EntityPage } from "../../core/components/entityPage/EntityPage"
 import { ClientTable } from "../../clients/components/table/clientTable"
-import classes from "./clientPage.module.scss"
-import { Button } from "antd"
+import { useEnsurePermissions } from "../../auth/hooks/useEnsurePermisions"
 
 const ClientsPage: BlitzPage = () => {
-  const { push } = useRouter()
-
   return (
-    <>
-      <Head>
-        <title>Clients</title>
-      </Head>
-
-      <div className={classes.clientPage}>
-        <div className={classes.header}>
-          <h2> Clients </h2>
-
-          <Button
-            type={"primary"}
-            onClick={() => push(Routes.NewClientPage(), undefined, { shallow: true })}
-          >
-            New Client
-          </Button>
-        </div>
-
-        <Suspense fallback={<div>Loading...</div>}>
-          <ClientTable />
-        </Suspense>
-      </div>
-    </>
+    <EntityPage name={"Client"} route={Routes.NewClientPage()}>
+      <ClientTable />
+    </EntityPage>
   )
 }
 

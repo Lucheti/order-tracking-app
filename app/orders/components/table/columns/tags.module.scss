@@ -1,0 +1,25 @@
+.tooltip {
+  padding: 1rem 1.5rem;
+
+  h4 {
+    font-size: 1rem;
+    color: #555;
+  }
+
+  .pendingDivider {
+    color: #d4b106;
+    border-color: #fffb8f;
+    margin-top: 0;
+  }
+
+  .doneDivider {
+    color: green;
+    border-color: green;
+    margin-top: 0;
+  }
+
+  button {
+    background: green !important;
+    border-color: green !important;
+  }
+}

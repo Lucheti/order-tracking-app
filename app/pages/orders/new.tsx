@@ -1,8 +1,9 @@
 import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createOrder, { CreateOrder } from "app/orders/mutations/createOrder"
-import { OrderForm, FORM_ERROR } from "app/orders/components/OrderForm"
+import { OrderForm } from "app/orders/components/OrderForm"
 import classes from "./orderPage.module.scss"
+import { message } from "antd"
 
 const NewOrderPage: BlitzPage = () => {
   const router = useRouter()
@@ -16,20 +17,15 @@ const NewOrderPage: BlitzPage = () => {
 
       <OrderForm
         submitText="Create Order"
-        // TODO use a zod schema for form validation
-        //  - Tip: extract mutation's schema into a shared `validations.ts` file and
-        //         then import and use it here
-        // schema={CreateOrder}
         initialValues={{}}
+        schema={CreateOrder}
         onSubmit={async (values) => {
           try {
             const order = await createOrderMutation(values)
             router.push(Routes.ShowOrderPage({ orderId: order.id }))
           } catch (error: any) {
             console.error(error)
-            return {
-              [FORM_ERROR]: "error.toString()",
-            }
+            message.error("Error creating order")
           }
         }}
       />

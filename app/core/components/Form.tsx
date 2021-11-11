@@ -1,59 +1,36 @@
-import { ReactNode, PropsWithoutRef } from "react"
-import { Form as FinalForm, FormProps as FinalFormProps } from "react-final-form"
+import { ReactNode } from "react"
+import { Button, Form as ANTDForm } from "antd"
+import { FormProps as FinalFormProps } from "react-final-form"
 import { z } from "zod"
-import { validateZodSchema } from "blitz"
-import { Button } from "antd"
-export { FORM_ERROR } from "final-form"
+import { FormApi, SubmissionErrors } from "final-form"
+const { Item } = ANTDForm
 
-export interface FormProps<S extends z.ZodType<any, any>>
-  extends Omit<PropsWithoutRef<JSX.IntrinsicElements["form"]>, "onSubmit"> {
+export interface FormProps<S extends z.ZodType<any, any>> {
   /** All your form fields */
   children?: ReactNode
   /** Text to display in the submit button */
   submitText?: string
   schema?: S
-  onSubmit: FinalFormProps<z.infer<S>>["onSubmit"]
-  initialValues?: FinalFormProps<z.infer<S>>["initialValues"]
+  onSubmit: (values: z.infer<S>) => Promise<any>
+  initialValues?: Partial<z.infer<S>>
 }
 
 export function Form<S extends z.ZodType<any, any>>({
   children,
   submitText,
-  schema,
   initialValues,
   onSubmit,
   ...props
 }: FormProps<S>) {
   return (
-    <FinalForm
-      initialValues={initialValues}
-      // validate={validateZodSchema(schema)}
-      onSubmit={onSubmit}
-      render={({ handleSubmit, submitting, submitError }) => (
-        <form onSubmit={handleSubmit} className="form" {...props}>
-          {/* Form fields supplied as children are rendered here */}
-          {children}
-
-          {submitError && (
-            <div role="alert" style={{ color: "red" }}>
-              {submitError}
-            </div>
-          )}
-
-          {submitText && (
-            <Button type={"primary"} htmlType={"submit"} disabled={submitting}>
-              {submitText}
-            </Button>
-          )}
-
-          <style global jsx>{`
-            .form > * + * {
-              margin-top: 1rem;
-            }
-          `}</style>
-        </form>
-      )}
-    />
+    <ANTDForm initialValues={initialValues} onFinish={onSubmit} layout={"vertical"}>
+      {children}
+      <Item>
+        <Button type="primary" htmlType="submit">
+          Submit
+        </Button>
+      </Item>
+    </ANTDForm>
   )
 }
 

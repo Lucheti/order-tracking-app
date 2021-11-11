@@ -9,6 +9,7 @@ body {
 .input-group {
   display: flex;
   gap: 2rem;
+  align-items: center;
 }
 
 .input-group div {
@@ -42,7 +43,7 @@ body {
   border-radius: 5px;
 }
 
-.ant-layout-sider .ant-menu .ant-menu-title-content {
+.ant-layout-sider .ant-menu .ant-menu-title-content a {
   color: #888;
 }
 
@@ -74,7 +75,7 @@ body {
   color: white;
 }
 
-.ant-layout-sider .ant-menu .ant-menu-item-selected .ant-menu-title-content {
+.ant-layout-sider .ant-menu .ant-menu-item-selected .ant-menu-title-content a {
   color: #333;
   font-weight: 500;
 }

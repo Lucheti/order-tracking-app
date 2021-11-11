@@ -1,29 +1,60 @@
 import { Form, FormProps } from "app/core/components/Form"
-import { LabeledTextField } from "app/core/components/LabeledTextField"
 import { z } from "zod"
-import LabeledTextAreaField from "../../core/components/LabeledTextAreaField"
-export { FORM_ERROR } from "app/core/components/Form"
+import { Form as ANTDForm, Input, InputNumber } from "antd"
+
+const { Item } = ANTDForm
+const { TextArea } = Input
 
 export function ProductForm<S extends z.ZodType<any, any>>(props: FormProps<S>) {
   return (
     <Form<S> {...props}>
       <div className={"input-group"}>
-        <LabeledTextField name="model" label="Model" placeholder="Model" />
-        <LabeledTextField name="brand" label="Brand" placeholder="Brand" />
+        <Item
+          label="Brand"
+          name="brand"
+          rules={[{ required: true, message: "This field is required!" }]}
+        >
+          <Input autoFocus placeholder="Brand" />
+        </Item>
+
+        <Item
+          label="Model"
+          name="model"
+          rules={[{ required: true, message: "This field is required!" }]}
+        >
+          <Input autoFocus placeholder="Model" />
+        </Item>
       </div>
 
       <div className={"input-group"}>
-        <LabeledTextField name="stock" label="Stock" placeholder="Stock" type={"number"} />
-        <LabeledTextField name="location" label="Location" placeholder="Location" />
+        <Item
+          label="Stock"
+          name="stock"
+          rules={[{ required: true, message: "This field is required!" }]}
+        >
+          <InputNumber autoFocus placeholder="Stock" />
+        </Item>
+
+        <Item
+          label="Location"
+          name="location"
+          rules={[{ required: true, message: "This field is required!" }]}
+        >
+          <Input autoFocus placeholder="Location" />
+        </Item>
       </div>
 
       <div className={"input-group"}>
-        <LabeledTextField name="price" label="Price" placeholder="Price" type={"number"} />
-        <LabeledTextAreaField
-          name="description"
-          label="Description (Optional)"
-          placeholder="Description"
-        />
+        <Item
+          label="Price"
+          name="price"
+          rules={[{ required: true, message: "This field is required!" }]}
+        >
+          <InputNumber autoFocus placeholder="Price" />
+        </Item>
+        <Item label="Description" name="description">
+          <TextArea autoFocus placeholder="Description" rows={4} />
+        </Item>
       </div>
     </Form>
   )

@@ -8,7 +8,7 @@ const ITEMS_PER_PAGE = 20
 export const ProductTable = () => {
   const router = useRouter()
   const page = Number(router.query.page) || 0
-  const [{ products, hasMore, count }] = usePaginatedQuery(getProducts, {
+  const [{ products, hasMore, count }, { isLoading }] = usePaginatedQuery(getProducts, {
     orderBy: { id: "asc" },
     skip: ITEMS_PER_PAGE * page,
     take: ITEMS_PER_PAGE,
@@ -29,6 +29,7 @@ export const ProductTable = () => {
           onChange: (newPage) => (newPage > page ? goToNextPage() : goToPreviousPage()),
           position: ["bottomLeft"],
         }}
+        loading={isLoading}
       />
     </div>
   )

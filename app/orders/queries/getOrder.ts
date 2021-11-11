@@ -18,6 +18,7 @@ export default resolver.pipe(resolver.zod(GetOrder), resolver.authorize(), async
         },
       },
       invoices: true,
+      client: true,
     },
   })
 
