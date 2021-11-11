@@ -1,7 +1,8 @@
 import { Link, useRouter, useMutation, BlitzPage, Routes } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createUser from "app/users/mutations/createUser"
-import { UserForm, FORM_ERROR } from "app/users/components/UserForm"
+import { UserForm } from "app/users/components/UserForm"
+import { message } from "antd"
 
 const NewUserPage: BlitzPage = () => {
   const router = useRouter()
@@ -24,9 +25,7 @@ const NewUserPage: BlitzPage = () => {
             router.push(Routes.ShowUserPage({ userId: user.id }))
           } catch (error: any) {
             console.error(error)
-            return {
-              [FORM_ERROR]: error.toString(),
-            }
+            message.error(error.toString())
           }
         }}
       />

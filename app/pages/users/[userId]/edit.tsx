@@ -3,7 +3,8 @@ import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Rout
 import Layout from "app/core/layouts/Layout"
 import getUser from "app/users/queries/getUser"
 import updateUser from "app/users/mutations/updateUser"
-import { UserForm, FORM_ERROR } from "app/users/components/UserForm"
+import { UserForm } from "app/users/components/UserForm"
+import { message } from "antd"
 
 export const EditUser = () => {
   const router = useRouter()
@@ -45,9 +46,7 @@ export const EditUser = () => {
               router.push(Routes.ShowUserPage({ userId: updated.id }))
             } catch (error: any) {
               console.error(error)
-              return {
-                [FORM_ERROR]: error.toString(),
-              }
+              message.error(error.toString())
             }
           }}
         />

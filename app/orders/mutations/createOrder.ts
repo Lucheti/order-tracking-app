@@ -35,9 +35,6 @@ export default resolver.pipe(resolver.zod(CreateOrder), resolver.authorize(), as
     data: {
       ...input,
       total,
-      invoices: {
-        create: [],
-      },
       products: {
         create: products.map(({ id, quantity }) => ({
           product: {

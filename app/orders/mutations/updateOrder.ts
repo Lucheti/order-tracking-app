@@ -39,7 +39,7 @@ export default resolver.pipe(
             product: true,
           },
         },
-        invoices: true,
+        invoice: true,
       },
       data: {
         ...data,

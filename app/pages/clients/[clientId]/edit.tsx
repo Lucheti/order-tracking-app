@@ -3,7 +3,8 @@ import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Rout
 import Layout from "app/core/layouts/Layout"
 import getClient from "app/clients/queries/getClient"
 import updateClient from "app/clients/mutations/updateClient"
-import { ClientForm, FORM_ERROR } from "app/clients/components/ClientForm"
+import { ClientForm } from "app/clients/components/ClientForm"
+import { message } from "antd"
 
 export const EditClient = () => {
   const router = useRouter()
@@ -51,9 +52,7 @@ export const EditClient = () => {
               router.push(Routes.ShowClientPage({ clientId: updated.id }))
             } catch (error: any) {
               console.error(error)
-              return {
-                [FORM_ERROR]: error.toString(),
-              }
+              message.error(error.toString())
             }
           }}
         />

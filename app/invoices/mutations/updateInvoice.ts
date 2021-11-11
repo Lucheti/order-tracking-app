@@ -3,8 +3,7 @@ import db from "db"
 import { z } from "zod"
 
 const UpdateInvoice = z.object({
-  id: z.number(),
-  name: z.string(),
+  id: z.string(),
 })
 
 export default resolver.pipe(

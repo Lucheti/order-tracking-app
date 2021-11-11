@@ -3,7 +3,8 @@ import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Rout
 import Layout from "app/core/layouts/Layout"
 import getProduct from "app/products/queries/getProduct"
 import updateProduct from "app/products/mutations/updateProduct"
-import { ProductForm, FORM_ERROR } from "app/products/components/ProductForm"
+import { ProductForm } from "app/products/components/ProductForm"
+import { message } from "antd"
 
 export const EditProduct = () => {
   const router = useRouter()
@@ -44,9 +45,7 @@ export const EditProduct = () => {
               router.push(Routes.ShowProductPage({ productId: updated.id }))
             } catch (error: any) {
               console.error(error)
-              return {
-                [FORM_ERROR]: error.toString(),
-              }
+              message.error(error.toString())
             }
           }}
         />

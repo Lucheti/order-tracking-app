@@ -27,12 +27,6 @@ const NewInvoicePage: BlitzPage = () => {
           }
         }}
       />
-
-      <p>
-        <Link href={Routes.InvoicesPage()}>
-          <a>Invoices</a>
-        </Link>
-      </p>
     </div>
   )
 }

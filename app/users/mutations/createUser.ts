@@ -8,7 +8,14 @@ const CreateUser = z.object({
 
 export default resolver.pipe(resolver.zod(CreateUser), resolver.authorize(), async (input) => {
   // TODO: in multi-tenant app, you must add validation to ensure correct tenant
-  const user = await db.user.create({ data: input })
+  const user = await db.user.create({
+    data: {
+      name: "asd",
+      surname: "asd",
+      email: "asd",
+      hashedPassword: "asd",
+    },
+  })
 
   return user
 })

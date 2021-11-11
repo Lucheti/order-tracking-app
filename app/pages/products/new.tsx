@@ -1,10 +1,9 @@
-import { BlitzPage, Link, Routes, useMutation, useRouter } from "blitz"
+import { BlitzPage, Routes, useMutation, useRouter } from "blitz"
 import Layout from "app/core/layouts/Layout"
 import createProduct, { CreateProduct } from "app/products/mutations/createProduct"
-import { FORM_ERROR, ProductForm } from "app/products/components/ProductForm"
+import { ProductForm } from "app/products/components/ProductForm"
 import classes from "./productPage.module.scss"
-import { CaretLeftOutlined } from "@ant-design/icons"
-import { Button } from "antd"
+import { message } from "antd"
 
 const NewProductPage: BlitzPage = () => {
   const router = useRouter()
@@ -25,9 +24,7 @@ const NewProductPage: BlitzPage = () => {
             router.push(Routes.ShowProductPage({ productId: product.id }))
           } catch (error: any) {
             console.error(error)
-            return {
-              [FORM_ERROR]: error.toString(),
-            }
+            message.error(error.toString())
           }
         }}
       />

@@ -6,7 +6,7 @@ import deleteInvoice from "app/invoices/mutations/deleteInvoice"
 
 export const Invoice = () => {
   const router = useRouter()
-  const invoiceId = useParam("invoiceId", "number")
+  const invoiceId = useParam("invoiceId", "string")
   const [deleteInvoiceMutation] = useMutation(deleteInvoice)
   const [invoice] = useQuery(getInvoice, { id: invoiceId })
 
@@ -29,7 +29,7 @@ export const Invoice = () => {
           onClick={async () => {
             if (window.confirm("This will be deleted")) {
               await deleteInvoiceMutation({ id: invoice.id })
-              router.push(Routes.InvoicesPage())
+              router.push(Routes.OrdersPage())
             }
           }}
           style={{ marginLeft: "0.5rem" }}
@@ -44,11 +44,7 @@ export const Invoice = () => {
 const ShowInvoicePage: BlitzPage = () => {
   return (
     <div>
-      <p>
-        <Link href={Routes.InvoicesPage()}>
-          <a>Invoices</a>
-        </Link>
-      </p>
+      <p> Invoice details </p>
 
       <Suspense fallback={<div>Loading...</div>}>
         <Invoice />

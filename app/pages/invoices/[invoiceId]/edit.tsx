@@ -3,11 +3,11 @@ import { Head, Link, useRouter, useQuery, useMutation, useParam, BlitzPage, Rout
 import Layout from "app/core/layouts/Layout"
 import getInvoice from "app/invoices/queries/getInvoice"
 import updateInvoice from "app/invoices/mutations/updateInvoice"
-import { InvoiceForm, FORM_ERROR } from "app/invoices/components/InvoiceForm"
+import { InvoiceForm } from "app/invoices/components/InvoiceForm"
 
 export const EditInvoice = () => {
   const router = useRouter()
-  const invoiceId = useParam("invoiceId", "number")
+  const invoiceId = useParam("invoiceId", "string")
   const [invoice, { setQueryData }] = useQuery(
     getInvoice,
     { id: invoiceId },
@@ -45,9 +45,6 @@ export const EditInvoice = () => {
               router.push(Routes.ShowInvoicePage({ invoiceId: updated.id }))
             } catch (error: any) {
               console.error(error)
-              return {
-                [FORM_ERROR]: error.toString(),
-              }
             }
           }}
         />
@@ -62,12 +59,6 @@ const EditInvoicePage: BlitzPage = () => {
       <Suspense fallback={<div>Loading...</div>}>
         <EditInvoice />
       </Suspense>
-
-      <p>
-        <Link href={Routes.InvoicesPage()}>
-          <a>Invoices</a>
-        </Link>
-      </p>
     </div>
   )
 }

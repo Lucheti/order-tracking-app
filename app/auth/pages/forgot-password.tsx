@@ -1,9 +1,10 @@
 import { BlitzPage, useMutation } from "blitz"
 import EmptyLayout from "app/core/layouts/EmptyLayout"
 import { LabeledTextField } from "app/core/components/LabeledTextField"
-import { Form, FORM_ERROR } from "app/core/components/Form"
+import { Form } from "app/core/components/Form"
 import { ForgotPassword } from "app/auth/validations"
 import forgotPassword from "app/auth/mutations/forgotPassword"
+import { message } from "antd"
 
 const ForgotPasswordPage: BlitzPage = () => {
   const [forgotPasswordMutation, { isSuccess }] = useMutation(forgotPassword)
@@ -29,9 +30,7 @@ const ForgotPasswordPage: BlitzPage = () => {
             try {
               await forgotPasswordMutation(values)
             } catch (error: any) {
-              return {
-                [FORM_ERROR]: "Sorry, we had an unexpected error. Please try again.",
-              }
+              message.error("Sorry, we had an unexpected error. Please try again.")
             }
           }}
         >
