@@ -11,7 +11,7 @@ export default resolver.pipe(
       data: {
         email: email.toLowerCase().trim(),
         hashedPassword,
-        role: Role.NONE,
+        role: Role.ADMIN,
         name: name.trim(),
         surname: surname.trim(),
         phone: phone?.trim(),

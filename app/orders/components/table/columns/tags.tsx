@@ -6,17 +6,38 @@ import classes from "./tags.module.scss"
 import { Link, Routes, useRouter } from "blitz"
 
 export const Tags = ({ order }: { order: Order }) => {
-  const pickingConfig = order.picking
-    ? { color: "green", text: "Picked" }
-    : { color: "yellow", text: "No picking", icon: <ClockCircleOutlined /> }
-
   return (
     <Space>
-      <Tag icon={pickingConfig?.icon} color={pickingConfig.color}>
-        {pickingConfig.text}
-      </Tag>
+      <PickingTag order={order} />
       <InvoiceTag order={order} />
     </Space>
+  )
+}
+
+const PickingTag = ({ order }: { order: Order }) => {
+  const router = useRouter()
+  const goToPicking = useCallback(
+    () => router.push(Routes.PickingPage({ orderId: order.id })),
+    [router]
+  )
+
+  if (order.picking) {
+    return (
+      <Tag icon={<CheckCircleOutlined />} color="green">
+        Picked
+      </Tag>
+    )
+  }
+
+  return (
+    <Tag
+      icon={<ClockCircleOutlined />}
+      color="yellow"
+      onClick={goToPicking}
+      style={{ cursor: "pointer" }}
+    >
+      No picking
+    </Tag>
   )
 }
 
@@ -24,6 +45,10 @@ const InvoiceTag = ({ order }: { order: Order }) => {
   const router = useRouter()
   const goToCreateInvoice = useCallback(
     () => router.push(Routes.NewInvoice({ orderId: order.id })),
+    [router]
+  )
+  const goToInvoice = useCallback(
+    () => router.push(Routes.ShowInvoicePage({ invoiceId: (order as any).invoice.id })),
     [router]
   )
 
@@ -39,31 +64,24 @@ const InvoiceTag = ({ order }: { order: Order }) => {
 
   if (order.invoiced)
     return (
-      <Tooltip title={"asdfadasfadfas"}>
-        <Tag icon={<CheckCircleOutlined />} color={"green"}>
-          Invoiced
-        </Tag>
-      </Tooltip>
+      <Tag
+        icon={<CheckCircleOutlined />}
+        color={"green"}
+        onClick={goToInvoice}
+        style={{ cursor: "pointer" }}
+      >
+        Invoiced
+      </Tag>
     )
 
-  const NoInvoiceTooltipContent = () => (
-    <div className={classes.tooltip}>
-      <Divider className={classes.pendingDivider} orientation={"left"}>
-        {" "}
-        Pending{" "}
-      </Divider>
-      <p> This order has not been invoiced yet </p>
-      <Button type={"primary"} onClick={goToCreateInvoice}>
-        Create Invoice
-      </Button>
-    </div>
-  )
-
   return (
-    <Tooltip title={() => <NoInvoiceTooltipContent />}>
-      <Tag icon={<ClockCircleOutlined />} color={"yellow"}>
-        No invoice
-      </Tag>
-    </Tooltip>
+    <Tag
+      icon={<ClockCircleOutlined />}
+      color={"yellow"}
+      onClick={goToCreateInvoice}
+      style={{ cursor: "pointer" }}
+    >
+      No invoice
+    </Tag>
   )
 }

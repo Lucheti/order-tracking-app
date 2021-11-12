@@ -19,16 +19,28 @@ export default resolver.pipe(
   async ({ clientId, orderId, availableFrom, availableTo, ...input }) => {
     // TODO: in multi-tenant app, you must add validation to ensure correct tenant
 
+    if (new Date(availableFrom).getTime() > new Date(availableTo).getTime()) {
+      throw new Error("La fecha de inicio debe ser menor a la fecha de fin")
+    }
+
     const from = new Date(availableFrom).toISOString()
     const to = new Date(availableTo).toISOString()
 
-    const invoice = await db.invoice.create({
-      data: {
+    const invoice = await db.invoice.upsert({
+      create: {
         ...input,
         availableFrom: from,
         availableTo: to,
         client: { connect: { id: clientId } },
         order: { connect: { id: orderId } },
+      },
+      update: {
+        ...input,
+        availableFrom: from,
+        availableTo: to,
+      },
+      where: {
+        orderId,
       },
     })
 

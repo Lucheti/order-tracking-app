@@ -14,6 +14,7 @@ const OrdersPage: BlitzPage = () => {
 }
 
 OrdersPage.authenticate = true
+OrdersPage.suppressFirstRenderFlicker = true
 OrdersPage.getLayout = (page) => <Layout>{page}</Layout>
 
 export default OrdersPage

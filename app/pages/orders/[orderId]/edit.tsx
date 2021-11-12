@@ -45,7 +45,7 @@ export const EditOrder = () => {
           // schema={UpdateOrder}
           initialValues={{
             ...order,
-            products: order.products.map((product) => product.productId),
+            products: order.products.map(({ productId, quantity }) => ({ productId, quantity })),
           }}
           onSubmit={async (values) => {
             try {

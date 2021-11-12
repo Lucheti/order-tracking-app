@@ -7,7 +7,7 @@ import { useEffect } from "react"
 export const useEnsurePermissions = () => {
   const { pathname, push } = useRouter()
   const user = useCurrentUser()
-  const [userPermission] = useQuery(getUserPermision, { role: user?.role })
+  const [userPermission] = useQuery(getUserPermision, { role: user?.role || Role.NONE })
   const throwError = () => {
     push(Routes.Error({ code: 403 }))
   }

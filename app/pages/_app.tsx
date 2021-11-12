@@ -11,18 +11,20 @@ import LoginForm from "app/auth/components/LoginForm"
 import "./index.css"
 import "antd/dist/antd.css"
 import { Suspense } from "react"
-import { useEnsurePermissions } from "../auth/hooks/useEnsurePermisions"
+import { Grommet } from "grommet"
 
 export default function App({ Component, pageProps }: AppProps) {
   const getLayout = Component.getLayout || ((page) => page)
 
   return (
-    <ErrorBoundary
-      FallbackComponent={RootErrorFallback}
-      onReset={useQueryErrorResetBoundary().reset}
-    >
-      <Suspense fallback={"Loading..."}>{getLayout(<Component {...pageProps} />)}</Suspense>
-    </ErrorBoundary>
+    <Grommet plain>
+      <ErrorBoundary
+        FallbackComponent={RootErrorFallback}
+        onReset={useQueryErrorResetBoundary().reset}
+      >
+        <Suspense fallback={"Loading..."}>{getLayout(<Component {...pageProps} />)}</Suspense>
+      </ErrorBoundary>
+    </Grommet>
   )
 }
 

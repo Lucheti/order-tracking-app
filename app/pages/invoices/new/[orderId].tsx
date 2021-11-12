@@ -4,6 +4,7 @@ import { InvoiceForm } from "../../../invoices/components/InvoiceForm"
 import classes from "../../orders/orderPage.module.scss"
 import createInvoice from "../../../invoices/mutations/createInvoice"
 import getOrder from "../../../orders/queries/getOrder"
+import { message } from "antd"
 
 const NewInvoice: BlitzPage = () => {
   const router = useRouter()
@@ -33,6 +34,7 @@ const NewInvoice: BlitzPage = () => {
             router.push(Routes.OrdersPage())
           } catch (error: any) {
             console.error(error)
+            message.error(error.toString())
           }
         }}
       />

@@ -85,3 +85,12 @@ body {
   gap: 1rem;
   margin-left: 250px;
 }
+
+.ant-form-item .ant-cascader-picker,
+.ant-form-item .ant-select {
+  width: 300px !important;
+}
+
+.ant-input-number {
+  width: 100%;
+}
