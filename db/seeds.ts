@@ -1,4 +1,4 @@
-// import db from "./index"
+import db, { Role } from "./index"
 
 /*
  * This seed function is executed when you run `blitz db seed`.
@@ -8,9 +8,24 @@
  * realistic data.
  */
 const seed = async () => {
-  // for (let i = 0; i < 5; i++) {
-  //   await db.project.create({ data: { name: "Project " + i } })
-  // }
+  await db.userPermision.createMany({
+    data: [
+      {
+        role: Role.ADMIN,
+        client: true,
+        product: true,
+        orders: true,
+        users: true,
+      },
+      {
+        role: Role.NONE,
+        client: true,
+        product: true,
+        orders: true,
+        users: true,
+      },
+    ],
+  })
 }
 
 export default seed

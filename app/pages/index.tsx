@@ -4,6 +4,7 @@ import getClients from "../clients/queries/getClients"
 import { Card, Statistic } from "antd"
 import getOrders from "../orders/queries/getOrders"
 import { Box, Meter, Stack, Text } from "grommet"
+import { useState } from "react"
 
 // indicador: cantidad de clientes nuevos por mes
 const NewMonthlyClients = () => {
@@ -107,12 +108,48 @@ const NonInvoicedLastWeekOrders = () => {
 
 // los clientes recuperados: los que dsps de 1 año de inactividad hicieron 2 o mas pedidos en un trimestre
 const RecoveredClients = () => {
-  const [{ clients, count }] = useQuery(getClients, {
-    where: {},
+  const [{ orders, count }] = useQuery(getOrders, {
+    orderBy: {
+      clientId: "asc",
+    },
   })
+
+  const [groupByClientId] = useState(
+    orders.reduce((acc, order) => {
+      if (!acc[order.clientId]) {
+        acc[order.clientId] = {
+          orders: [],
+          total: 0,
+        }
+      }
+      acc[order.clientId].orders.push(order)
+      acc[order.clientId].total += order.total
+      return acc
+    }, {})
+  )
+
+  const has1YearGapBetweenOrders = (groupByClientId) => {
+    const clientIds = Object.keys(groupByClientId)
+    const clientIdsWith2OrMoreOrders = clientIds.filter(
+      (clientId) => groupByClientId[clientId].orders.length >= 2
+    )
+    const clientIdsWith1YearGap = clientIdsWith2OrMoreOrders.filter((clientId) => {
+      const orders = groupByClientId[clientId].orders
+      const firstOrderDate = orders[0].createdAt
+      const lastOrderDate = orders[orders.length - 1].createdAt
+      const firstOrderDatePlus1Year = new Date(
+        firstOrderDate.getFullYear() + 1,
+        firstOrderDate.getMonth(),
+        firstOrderDate.getDate()
+      )
+      return lastOrderDate < firstOrderDatePlus1Year
+    })
+    return clientIdsWith1YearGap
+  }
 
   return (
     <Card title={"Recovered Clients"} style={{ width: "fit-content" }}>
+      {JSON.stringify(has1YearGapBetweenOrders(groupByClientId))}
       <Stack anchor="center">
         <Meter
           values={[
@@ -142,6 +179,7 @@ const Home = () => {
       <NewMonthlyClients />
       <ModifiedOrders />
       <NonInvoicedLastWeekOrders />
+      <RecoveredClients />
     </div>
   )
 }
