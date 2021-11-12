@@ -135,26 +135,38 @@ const RecoveredClients = () => {
     )
     const clientIdsWith1YearGap = clientIdsWith2OrMoreOrders.filter((clientId) => {
       const orders = groupByClientId[clientId].orders
-      const firstOrderDate = orders[0].createdAt
-      const lastOrderDate = orders[orders.length - 1].createdAt
-      const firstOrderDatePlus1Year = new Date(
-        firstOrderDate.getFullYear() + 1,
-        firstOrderDate.getMonth(),
-        firstOrderDate.getDate()
-      )
-      return lastOrderDate < firstOrderDatePlus1Year
+      // sort orders by createdAt
+      const sortedOrders = orders.sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime())
+
+      const orderWith1YearGap = sortedOrders.find((order, index) => {
+        if (index === sortedOrders.length - 1) return false
+        const nextOrder = sortedOrders[index + 1]
+        const timeDifference = nextOrder.createdAt.getTime() - order.createdAt.getTime()
+        return timeDifference > 31536000000
+      })
+
+      console.log(orderWith1YearGap)
+      if (orderWith1YearGap) {
+        console.log(sortedOrders)
+        const posteriorOrders = sortedOrders.filter(
+          (order) => order.createdAt.getTime() > orderWith1YearGap.createdAt.getTime()
+        )
+        console.log(posteriorOrders)
+        return posteriorOrders.length >= 2
+      }
+
+      return orderWith1YearGap
     })
     return clientIdsWith1YearGap
   }
 
   return (
     <Card title={"Recovered Clients"} style={{ width: "fit-content" }}>
-      {JSON.stringify(has1YearGapBetweenOrders(groupByClientId))}
       <Stack anchor="center">
         <Meter
           values={[
             {
-              value: 1,
+              value: has1YearGapBetweenOrders(groupByClientId).length,
               label: "recovered clients",
             },
           ]}
@@ -164,7 +176,7 @@ const RecoveredClients = () => {
         />
         <Box direction="row" align="center" pad={{ bottom: "xsmall" }}>
           <Text size="xlarge" weight="bold">
-            {1} / {count}
+            {has1YearGapBetweenOrders(groupByClientId).length}
           </Text>
         </Box>
       </Stack>
