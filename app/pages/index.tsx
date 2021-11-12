@@ -184,14 +184,46 @@ const RecoveredClients = () => {
   )
 }
 
+const MonthlyInvoicedMoney = () => {
+  const [{ orders }] = useQuery(getOrders, {
+    where: {
+      createdAt: {
+        gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
+        lte: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0),
+      },
+    },
+  })
+
+  const invoicedMoney = orders.reduce((acc, order) => {
+    if (order.invoiced) {
+      acc += order.total
+    }
+    return acc
+  }, 0)
+
+  return (
+    <Card title={"Monthly Invoiced Money"} style={{ width: "fit-content" }}>
+      <Statistic
+        title="This month invoices"
+        value={invoicedMoney}
+        valueStyle={{ color: "#3f8600" }}
+        suffix="$"
+      />
+    </Card>
+  )
+}
+
 const Home = () => {
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", gap: "2rem" }}>
       <h1> Dashboard </h1>
       <NewMonthlyClients />
-      <ModifiedOrders />
-      <NonInvoicedLastWeekOrders />
-      <RecoveredClients />
+      <div style={{ display: "flex", justifyContent: "space-around" }}>
+        <ModifiedOrders />
+        <NonInvoicedLastWeekOrders />
+        <RecoveredClients />
+      </div>
+      <MonthlyInvoicedMoney />
     </div>
   )
 }
