@@ -38,7 +38,8 @@
     "sass": "1.42.1",
     "shards-react": "1.0.3",
     "styled-components": "5.3.3",
-    "zod": "3.8.2"
+    "zod": "3.8.2",
+    "prisma": "3.3.0"
   },
   "devDependencies": {
     "@types/preview-email": "2.0.1",
@@ -50,7 +51,6 @@
     "prettier-plugin-prisma": "0.15.0",
     "pretty-quick": "3.1.1",
     "preview-email": "3.0.5",
-    "prisma": "3.3.0",
     "typescript": "~4.3"
   },
   "private": true
