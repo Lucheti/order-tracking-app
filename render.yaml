@@ -2,7 +2,7 @@ services:
   - type: web
     name: blitzapp
     env: node
-    plan: starter
+    plan: free
     buildCommand: yarn --frozen-lockfile --prod=false &&
       blitz prisma generate &&
       blitz build &&
